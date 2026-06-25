@@ -49,7 +49,7 @@ kib-movies-api/
 - [x] Filtering (incl. by genre)
 - [ ] Caching mechanism (Redis) to reduce DB calls
 - [x] Rate a movie + average rating shown in movies list
-- [ ] Add to watchlist / mark as favorite
+- [x] Add to watchlist / mark as favorite
 - [ ] Runs via `docker-compose up`
 - [ ] Accessible at http://localhost:8080
 - [ ] API documentation (Swagger + README)
@@ -73,7 +73,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `tmdb`
 - [x] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `movies`
 - [x] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `ratings`
-- [ ] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `feature/watchlist`
+- [x] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `watchlist`
 - [ ] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes, `CacheInterceptor` — `feature/caching`
 - [ ] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `feature/auth`
 - [ ] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `feature/swagger-docs`
@@ -116,4 +116,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 4 done: TMDB client + idempotent sync, `npm run seed`, daily cron. Seeded 60 movies / 19 genres.
 - 2026-06-25 — Phase 5 done: `GET /movies` with pagination, search, genre filter, averageRating, and `GET /movies/:id`.
 - 2026-06-25 — Phase 6 done: `POST /movies/:id/rating` (upsert, 1–10), recomputes average shown in movies endpoints.
+- 2026-06-25 — Phase 7 done: watchlist/favorites add, list (filter by type), delete via `WatchlistItem` model.
 ```

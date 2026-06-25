@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { TmdbModule } from './tmdb/tmdb.module';
 import { MoviesModule } from './movies/movies.module';
 import { RatingsModule } from './ratings/ratings.module';
+import { WatchlistModule } from './watchlist/watchlist.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { RatingsModule } from './ratings/ratings.module';
     TmdbModule,
     MoviesModule,
     RatingsModule,
+    WatchlistModule,
   ],
   controllers: [AppController],
   providers: [AppService],
