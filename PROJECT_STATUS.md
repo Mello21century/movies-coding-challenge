@@ -124,4 +124,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 12 done: helmet, rate limiting (100/60s → 429), Joi env validation, root→docs redirect, full README.
 - 2026-06-25 — Phase 13 done: develop → main, tagged v1.0.0, fresh-stack sanity check passed. All 17 challenge items complete.
 - 2026-06-25 — DX: shared Swagger example creds (demo@kib.dev / password123) on register & login for one-click try-out.
+- 2026-06-25 — RBAC: added `Role` (USER/ADMIN) via ADMIN_EMAILS allowlist + RolesGuard; `POST /api/admin/sync` (ADMIN-only). Seed/cron unchanged. Released as v1.0.1.
 ```

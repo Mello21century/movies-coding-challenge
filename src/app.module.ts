@@ -14,6 +14,7 @@ import { MoviesModule } from './movies/movies.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { WatchlistModule } from './watchlist/watchlist.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './auth/auth.module';
         TMDB_API_KEY: Joi.string().allow('').optional(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().default('1d'),
+        ADMIN_EMAILS: Joi.string().allow('').default(''),
       }),
     }),
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 100 }]),
@@ -49,6 +51,7 @@ import { AuthModule } from './auth/auth.module';
     RatingsModule,
     WatchlistModule,
     AuthModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

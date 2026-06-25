@@ -41,6 +41,7 @@ docker compose exec app node dist/seed     # or: npm run seed (locally)
 | `TMDB_API_KEY` | – | TMDB v3 key (optional) |
 | `JWT_SECRET` | ✓ | Secret for signing JWTs |
 | `JWT_EXPIRES_IN` | – | Token lifetime (default `1d`) |
+| `ADMIN_EMAILS` | – | Comma-separated emails granted the `ADMIN` role on register/login |
 
 Validated on boot via Joi — the app refuses to start if a required var is missing.
 
@@ -58,14 +59,24 @@ Interactive Swagger UI: **http://localhost:8080/api/docs** (OpenAPI JSON at `/ap
 | `POST` | `/api/watchlist` | Bearer | Add to watchlist/favorites (`type`) |
 | `GET` | `/api/watchlist` | Bearer | List your items — `?type` |
 | `DELETE` | `/api/watchlist/:id` | Bearer | Remove an item |
+| `POST` | `/api/admin/sync` | Bearer (ADMIN) | Trigger a full TMDB sync on demand |
 
 Authenticated routes expect an `Authorization: Bearer <token>` header.
+
+### Roles & the admin endpoint
+
+Users have a role (`USER` by default). To grant `ADMIN`, list the email in
+`ADMIN_EMAILS` (comma-separated) **before** that user registers/logs in — the
+role is assigned from the allowlist and embedded in the JWT, then enforced by a
+`RolesGuard`. Only `ADMIN`s can call `POST /api/admin/sync`. The seed command and
+the daily cron are unchanged; the admin endpoint is just an on-demand trigger.
 
 ## Project structure
 
 ```
 src/
-├── auth/         JWT auth — controller, service, strategy, guard, decorator
+├── auth/         JWT auth — strategy, guards (JWT + roles), @Roles decorator
+├── admin/        Admin-only endpoints (ADMIN-gated TMDB sync trigger)
 ├── movies/       Movie listing/search/filter + average rating
 ├── ratings/      Rate a movie (guarded)
 ├── watchlist/    Watchlist & favorites (guarded)
@@ -83,7 +94,7 @@ prisma/           schema.prisma + migrations
 - **Sync:** `TmdbService` fetches genres + popular movies; `SyncService` upserts them idempotently (by `tmdbId`) — safe to run on the daily cron or on demand.
 - **Caching:** movie reads are cached in Redis (`@nestjs/cache-manager` + `@keyv/redis`) and invalidated whenever a rating or a sync changes the data.
 - **Average rating** is computed from the app's own `Rating` rows (not TMDB's vote average) and surfaced in both list and detail responses.
-- **Auth:** passwords hashed with bcrypt; JWT guards protect rating and watchlist; the acting user is taken from the token, not the request body.
+- **Auth & roles:** passwords hashed with bcrypt; JWT guards protect rating and watchlist; the acting user is taken from the token, not the request body. Role-based access (`USER`/`ADMIN`) gates the admin sync endpoint via a `RolesGuard`.
 - **Hardening:** `helmet` security headers, global rate limiting (`@nestjs/throttler`), env validation, and graceful shutdown hooks.
 
 ## Scripts

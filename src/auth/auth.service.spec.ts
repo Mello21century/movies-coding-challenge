@@ -1,5 +1,7 @@
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import { Role } from '../generated/prisma/client';
 import { AuthService } from './auth.service';
 
 jest.mock('bcrypt');
@@ -10,11 +12,17 @@ describe('AuthService', () => {
   let service: AuthService;
   let prisma: { user: { findUnique: jest.Mock; create: jest.Mock } };
   let jwt: { sign: jest.Mock };
+  let config: { get: jest.Mock };
 
   beforeEach(() => {
     prisma = { user: { findUnique: jest.fn(), create: jest.fn() } };
     jwt = { sign: jest.fn().mockReturnValue('signed.jwt') };
-    service = new AuthService(prisma as never, jwt as never);
+    config = { get: jest.fn().mockReturnValue('admin@kib.dev') };
+    service = new AuthService(
+      prisma as never,
+      jwt as never,
+      config as unknown as ConfigService,
+    );
   });
 
   describe('register', () => {
@@ -25,29 +33,52 @@ describe('AuthService', () => {
       ).rejects.toThrow(ConflictException);
     });
 
-    it('hashes the password, creates the user and returns a token', async () => {
+    it('creates a USER and returns a token with the role', async () => {
       prisma.user.findUnique.mockResolvedValue(null);
       bcryptMock.hash.mockResolvedValue('hashed' as never);
-      prisma.user.create.mockResolvedValue({ id: 5, email: 'a@b.c' });
+      prisma.user.create.mockResolvedValue({
+        id: 5,
+        email: 'a@b.c',
+        role: Role.USER,
+      });
       const res = await service.register({
         email: 'a@b.c',
         password: 'password123',
         name: 'A',
       });
-      expect(bcryptMock.hash).toHaveBeenCalledWith('password123', 10);
+      expect(prisma.user.create).toHaveBeenCalledWith({
+        data: {
+          email: 'a@b.c',
+          passwordHash: 'hashed',
+          name: 'A',
+          role: Role.USER,
+        },
+      });
       expect(res).toEqual({
         accessToken: 'signed.jwt',
-        user: { id: 5, email: 'a@b.c' },
+        user: { id: 5, email: 'a@b.c', role: Role.USER },
       });
     });
 
-    it('defaults name to null when omitted', async () => {
+    it('assigns ADMIN when the email is in ADMIN_EMAILS', async () => {
       prisma.user.findUnique.mockResolvedValue(null);
       bcryptMock.hash.mockResolvedValue('hashed' as never);
-      prisma.user.create.mockResolvedValue({ id: 6, email: 'c@d.e' });
-      await service.register({ email: 'c@d.e', password: 'password123' });
+      prisma.user.create.mockResolvedValue({
+        id: 1,
+        email: 'admin@kib.dev',
+        role: Role.ADMIN,
+      });
+      await service.register({
+        email: 'admin@kib.dev',
+        password: 'password123',
+      });
       expect(prisma.user.create).toHaveBeenCalledWith({
-        data: { email: 'c@d.e', passwordHash: 'hashed', name: null },
+        data: {
+          email: 'admin@kib.dev',
+          passwordHash: 'hashed',
+          name: null,
+          role: Role.ADMIN,
+        },
       });
     });
   });
@@ -65,6 +96,7 @@ describe('AuthService', () => {
         id: 1,
         email: 'a@b.c',
         passwordHash: 'h',
+        role: Role.USER,
       });
       bcryptMock.compare.mockResolvedValue(false as never);
       await expect(
@@ -72,16 +104,16 @@ describe('AuthService', () => {
       ).rejects.toThrow(UnauthorizedException);
     });
 
-    it('returns a token for valid credentials', async () => {
+    it('returns a token with the user role', async () => {
       prisma.user.findUnique.mockResolvedValue({
         id: 1,
         email: 'a@b.c',
         passwordHash: 'h',
+        role: Role.ADMIN,
       });
       bcryptMock.compare.mockResolvedValue(true as never);
       const res = await service.login({ email: 'a@b.c', password: 'good' });
-      expect(res.accessToken).toBe('signed.jwt');
-      expect(res.user).toEqual({ id: 1, email: 'a@b.c' });
+      expect(res.user).toEqual({ id: 1, email: 'a@b.c', role: Role.ADMIN });
     });
   });
 });

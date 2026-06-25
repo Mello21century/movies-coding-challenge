@@ -13,6 +13,7 @@ services:
       TMDB_API_KEY: ${TMDB_API_KEY:-}
       JWT_SECRET: ${JWT_SECRET:-super-secret-dev-key-change-me}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
     depends_on:
       postgres:
         condition: service_healthy
