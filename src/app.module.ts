@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { TmdbModule } from './tmdb/tmdb.module';
 import { MoviesModule } from './movies/movies.module';
+import { RatingsModule } from './ratings/ratings.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MoviesModule } from './movies/movies.module';
     PrismaModule,
     TmdbModule,
     MoviesModule,
+    RatingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
