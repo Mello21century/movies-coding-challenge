@@ -86,10 +86,31 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.service.ts",
+      "**/*.controller.ts",
+      "auth/strategies/jwt.strategy.ts",
+      "!**/*.module.ts",
+      "!**/*.spec.ts",
+      "!main.ts",
+      "!seed.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/generated/"
     ],
     "coverageDirectory": "../coverage",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 85,
+        "lines": 85,
+        "statements": 85
+      }
+    },
     "testEnvironment": "node"
   }
 }
