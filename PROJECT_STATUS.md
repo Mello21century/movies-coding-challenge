@@ -48,7 +48,7 @@ kib-movies-api/
 - [x] Pagination
 - [x] Filtering (incl. by genre)
 - [ ] Caching mechanism (Redis) to reduce DB calls
-- [ ] Rate a movie + average rating shown in movies list
+- [x] Rate a movie + average rating shown in movies list
 - [ ] Add to watchlist / mark as favorite
 - [ ] Runs via `docker-compose up`
 - [ ] Accessible at http://localhost:8080
@@ -72,7 +72,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 3 — Prisma schema** — models + first migration + `PrismaService` — `feature/prisma`
 - [x] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `tmdb`
 - [x] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `movies`
-- [ ] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `feature/ratings`
+- [x] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `ratings`
 - [ ] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `feature/watchlist`
 - [ ] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes, `CacheInterceptor` — `feature/caching`
 - [ ] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `feature/auth`
@@ -115,4 +115,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 3 done: Prisma 7 schema, migrations, PrismaService (pg driver adapter).
 - 2026-06-25 — Phase 4 done: TMDB client + idempotent sync, `npm run seed`, daily cron. Seeded 60 movies / 19 genres.
 - 2026-06-25 — Phase 5 done: `GET /movies` with pagination, search, genre filter, averageRating, and `GET /movies/:id`.
+- 2026-06-25 — Phase 6 done: `POST /movies/:id/rating` (upsert, 1–10), recomputes average shown in movies endpoints.
 ```
