@@ -8,6 +8,25 @@ type MovieWithGenres = Prisma.MovieGetPayload<{
   include: { genres: { include: { genre: true } } };
 }>;
 
+export interface MovieDto {
+  id: number;
+  tmdbId: number;
+  title: string;
+  overview: string | null;
+  releaseDate: Date | null;
+  posterPath: string | null;
+  popularity: number;
+  voteAverage: number;
+  voteCount: number;
+  genres: string[];
+  averageRating: number | null;
+}
+
+export interface PaginatedMovies {
+  data: MovieDto[];
+  meta: { page: number; limit: number; total: number; totalPages: number };
+}
+
 @Injectable()
 export class MoviesService {
   constructor(
@@ -15,9 +34,9 @@ export class MoviesService {
     @Inject(CACHE_MANAGER) private readonly cache: Cache,
   ) {}
 
-  async findAll(query: ListMoviesDto) {
+  async findAll(query: ListMoviesDto): Promise<PaginatedMovies> {
     const cacheKey = `movies:list:${JSON.stringify(query)}`;
-    const cached = await this.cache.get(cacheKey);
+    const cached = await this.cache.get<PaginatedMovies>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -66,9 +85,9 @@ export class MoviesService {
     return result;
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<MovieDto> {
     const cacheKey = `movies:item:${id}`;
-    const cached = await this.cache.get(cacheKey);
+    const cached = await this.cache.get<MovieDto>(cacheKey);
     if (cached) {
       return cached;
     }
@@ -95,7 +114,10 @@ export class MoviesService {
     await this.cache.clear();
   }
 
-  private toDto(movie: MovieWithGenres, averageRating: number | null) {
+  private toDto(
+    movie: MovieWithGenres,
+    averageRating: number | null,
+  ): MovieDto {
     return {
       id: movie.id,
       tmdbId: movie.tmdbId,
