@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+  runtime      = "nodejs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Movie {
+  id          Int       @id @default(autoincrement())
+  tmdbId      Int       @unique
+  title       String
+  overview    String?
+  releaseDate DateTime?
+  posterPath  String?
+  popularity  Float     @default(0)
+  voteAverage Float     @default(0)
+  voteCount   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  genres    MovieGenre[]
+  ratings   Rating[]
+  watchlist WatchlistItem[]
+
+  @@index([title])
+  @@index([popularity])
+}
+
+model Genre {
+  id     Int          @id @default(autoincrement())
+  tmdbId Int          @unique
+  name   String       @unique
+  movies MovieGenre[]
+}
+
+model MovieGenre {
+  movieId Int
+  genreId Int
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  genre   Genre @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([movieId, genreId])
+  @@index([genreId])
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+
+  ratings   Rating[]
+  watchlist WatchlistItem[]
+}
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  movieId   Int
+  value     Int // 1..10, validated in the DTO
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
+  @@index([movieId])
+}
+
+enum WatchlistType {
+  WATCHLIST
+  FAVORITE
+}
+
+model WatchlistItem {
+  id        Int           @id @default(autoincrement())
+  userId    Int
+  movieId   Int
+  type      WatchlistType
+  createdAt DateTime      @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId, type])
+  @@index([userId, type])
+}
