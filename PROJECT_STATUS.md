@@ -52,7 +52,7 @@ kib-movies-api/
 - [x] Add to watchlist / mark as favorite
 - [ ] Runs via `docker-compose up`
 - [ ] Accessible at http://localhost:8080
-- [ ] API documentation (Swagger + README)
+- [x] API documentation (Swagger + README)
 - [ ] Unit tests ≥ 85% coverage
 - [ ] Markdown docs (structure, setup, prerequisites)
 - [ ] Clean branch/commit workflow
@@ -76,7 +76,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `watchlist`
 - [x] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes — `cache`
 - [x] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `auth`
-- [ ] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `feature/swagger-docs`
+- [x] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `docs`
 - [ ] **Phase 11 — Testing ≥ 85%** — service/controller/guard units + e2e, coverage thresholds — `feature/tests`
 - [ ] **Phase 12 — Production hardening + docs** — helmet, throttler, env validation, logging, README — `feature/hardening`
 - [ ] **Phase 13 — Release** — merge to `main`, tag, fresh-clone sanity check
@@ -119,4 +119,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 7 done: watchlist/favorites add, list (filter by type), delete via `WatchlistItem` model.
 - 2026-06-25 — Phase 8 done: Redis cache (cache-manager v7 + @keyv/redis) on movie reads, invalidated on rating/sync.
 - 2026-06-25 — Phase 9 done: JWT auth (register/login, bcrypt), guards protect rating + watchlist; user taken from token.
+- 2026-06-25 — Phase 10 done: Swagger UI at /api/docs (bearer auth, tags), README endpoints table.
 ```
