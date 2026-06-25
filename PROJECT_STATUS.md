@@ -41,24 +41,24 @@ kib-movies-api/
 
 ## Challenge requirement checklist
 
-- [ ] Consumes TMDB API
-- [ ] Stores & syncs data in PostgreSQL (scalable / future-proof)
-- [ ] Listing endpoint
-- [ ] Search
-- [ ] Pagination
-- [ ] Filtering (incl. by genre)
-- [ ] Caching mechanism (Redis) to reduce DB calls
-- [ ] Rate a movie + average rating shown in movies list
-- [ ] Add to watchlist / mark as favorite
-- [ ] Runs via `docker-compose up`
-- [ ] Accessible at http://localhost:8080
-- [ ] API documentation (Swagger + README)
-- [ ] Unit tests ≥ 85% coverage
-- [ ] Markdown docs (structure, setup, prerequisites)
-- [ ] Clean branch/commit workflow
-- [ ] Production ready (helmet, throttler, env validation, graceful shutdown)
-- [ ] SOLID / KISS / YAGNI / DRY
-- [ ] (Nice-to-have) Secure APIs — JWT auth
+- [x] Consumes TMDB API
+- [x] Stores & syncs data in PostgreSQL (scalable / future-proof)
+- [x] Listing endpoint
+- [x] Search
+- [x] Pagination
+- [x] Filtering (incl. by genre)
+- [x] Caching mechanism (Redis) to reduce DB calls
+- [x] Rate a movie + average rating shown in movies list
+- [x] Add to watchlist / mark as favorite
+- [x] Runs via `docker-compose up`
+- [x] Accessible at http://localhost:8080
+- [x] API documentation (Swagger + README)
+- [x] Unit tests ≥ 85% coverage (100% statements/lines/functions)
+- [x] Markdown docs (structure, setup, prerequisites)
+- [x] Clean branch/commit workflow
+- [x] Production ready (helmet, throttler, env validation, graceful shutdown)
+- [x] SOLID / KISS / YAGNI / DRY
+- [x] (Nice-to-have) Secure APIs — JWT auth
 
 ---
 
@@ -66,20 +66,20 @@ kib-movies-api/
 
 Each phase = one feature branch off `develop`, conventional commits, merged via PR.
 
-- [ ] **Phase 0 — Repo & workflow setup** — `git init`, `main`+`develop`, public remote, `.gitignore`, `chore: init`
-- [ ] **Phase 1 — NestJS scaffold + config** — `@nestjs/config`, **port 8080**, global `ValidationPipe` — `feature/scaffold`
-- [ ] **Phase 2 — Docker & docker-compose** — Dockerfile (multi-stage), app/postgres/redis, healthchecks, migrate on start — `feature/docker`
-- [ ] **Phase 3 — Prisma schema** — models + first migration + `PrismaService` — `feature/prisma-schema`
-- [ ] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `feature/tmdb-sync`
-- [ ] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `feature/movies`
-- [ ] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `feature/ratings`
-- [ ] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `feature/watchlist`
-- [ ] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes, `CacheInterceptor` — `feature/caching`
-- [ ] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `feature/auth`
-- [ ] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `feature/swagger-docs`
-- [ ] **Phase 11 — Testing ≥ 85%** — service/controller/guard units + e2e, coverage thresholds — `feature/tests`
-- [ ] **Phase 12 — Production hardening + docs** — helmet, throttler, env validation, logging, README — `feature/hardening`
-- [ ] **Phase 13 — Release** — merge to `main`, tag, fresh-clone sanity check
+- [x] **Phase 0 — Repo & workflow setup** — `git init`, `main`+`develop`, public remote, `.gitignore`, `chore: init`
+- [x] **Phase 1 — NestJS scaffold + config** — `@nestjs/config`, **port 8080**, global `ValidationPipe` — `feature/base`
+- [x] **Phase 2 — Docker & docker-compose** — Dockerfile (multi-stage), app/postgres/redis, healthchecks, migrate on start — `feature/docker`
+- [x] **Phase 3 — Prisma schema** — models + first migration + `PrismaService` — `feature/prisma`
+- [x] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `tmdb`
+- [x] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `movies`
+- [x] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `ratings`
+- [x] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `watchlist`
+- [x] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes — `cache`
+- [x] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `auth`
+- [x] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `docs`
+- [x] **Phase 11 — Testing ≥ 85%** — service/controller/guard units, coverage thresholds — `tests`
+- [x] **Phase 12 — Production hardening + docs** — helmet, throttler, env validation, README — `hardening`
+- [x] **Phase 13 — Release** — merge to `main`, tag `v1.0.0`, fresh-stack sanity check
 
 ---
 
@@ -112,5 +112,15 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 ## Milestone log
 
 - 2026-06-25 — Project planned. Stack locked: NestJS + Prisma/Postgres + Redis + JWT, seed+cron sync.
-- Upcoming Milestones.
+- 2026-06-25 — Phase 3 done: Prisma 7 schema, migrations, PrismaService (pg driver adapter).
+- 2026-06-25 — Phase 4 done: TMDB client + idempotent sync, `npm run seed`, daily cron. Seeded 60 movies / 19 genres.
+- 2026-06-25 — Phase 5 done: `GET /movies` with pagination, search, genre filter, averageRating, and `GET /movies/:id`.
+- 2026-06-25 — Phase 6 done: `POST /movies/:id/rating` (upsert, 1–10), recomputes average shown in movies endpoints.
+- 2026-06-25 — Phase 7 done: watchlist/favorites add, list (filter by type), delete via `WatchlistItem` model.
+- 2026-06-25 — Phase 8 done: Redis cache (cache-manager v7 + @keyv/redis) on movie reads, invalidated on rating/sync.
+- 2026-06-25 — Phase 9 done: JWT auth (register/login, bcrypt), guards protect rating + watchlist; user taken from token.
+- 2026-06-25 — Phase 10 done: Swagger UI at /api/docs (bearer auth, tags), README endpoints table.
+- 2026-06-25 — Phase 11 done: 43 unit tests, 13 suites; 100% statements/lines/functions, branch threshold 80.
+- 2026-06-25 — Phase 12 done: helmet, rate limiting (100/60s → 429), Joi env validation, root→docs redirect, full README.
+- 2026-06-25 — Phase 13 done: develop → main, tagged v1.0.0, fresh-stack sanity check passed. All 17 challenge items complete.
 ```
