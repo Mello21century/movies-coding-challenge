@@ -66,9 +66,9 @@ kib-movies-api/
 
 Each phase = one feature branch off `develop`, conventional commits, merged via PR.
 
-- [ ] **Phase 0 — Repo & workflow setup** — `git init`, `main`+`develop`, public remote, `.gitignore`, `chore: init`
-- [ ] **Phase 1 — NestJS scaffold + config** — `@nestjs/config`, **port 8080**, global `ValidationPipe` — `feature/scaffold`
-- [ ] **Phase 2 — Docker & docker-compose** — Dockerfile (multi-stage), app/postgres/redis, healthchecks, migrate on start — `feature/docker`
+- [x] **Phase 0 — Repo & workflow setup** — `git init`, `main`+`develop`, public remote, `.gitignore`, `chore: init`
+- [x] **Phase 1 — NestJS scaffold + config** — `@nestjs/config`, **port 8080**, global `ValidationPipe` — `feature/scaffold`
+- [x] **Phase 2 — Docker & docker-compose** — Dockerfile (multi-stage), app/postgres/redis, healthchecks, migrate on start — `feature/docker`
 - [ ] **Phase 3 — Prisma schema** — models + first migration + `PrismaService` — `feature/prisma-schema`
 - [ ] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `feature/tmdb-sync`
 - [ ] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `feature/movies`
