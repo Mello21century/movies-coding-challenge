@@ -79,7 +79,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `docs`
 - [x] **Phase 11 — Testing ≥ 85%** — service/controller/guard units, coverage thresholds — `tests`
 - [x] **Phase 12 — Production hardening + docs** — helmet, throttler, env validation, README — `hardening`
-- [ ] **Phase 13 — Release** — merge to `main`, tag, fresh-clone sanity check
+- [x] **Phase 13 — Release** — merge to `main`, tag `v1.0.0`, fresh-stack sanity check
 
 ---
 
@@ -122,4 +122,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 10 done: Swagger UI at /api/docs (bearer auth, tags), README endpoints table.
 - 2026-06-25 — Phase 11 done: 43 unit tests, 13 suites; 100% statements/lines/functions, branch threshold 80.
 - 2026-06-25 — Phase 12 done: helmet, rate limiting (100/60s → 429), Joi env validation, root→docs redirect, full README.
+- 2026-06-25 — Phase 13 done: develop → main, tagged v1.0.0, fresh-stack sanity check passed. All 17 challenge items complete.
 ```
