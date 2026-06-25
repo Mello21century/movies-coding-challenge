@@ -41,8 +41,8 @@ kib-movies-api/
 
 ## Challenge requirement checklist
 
-- [ ] Consumes TMDB API
-- [ ] Stores & syncs data in PostgreSQL (scalable / future-proof)
+- [x] Consumes TMDB API
+- [x] Stores & syncs data in PostgreSQL (scalable / future-proof)
 - [ ] Listing endpoint
 - [ ] Search
 - [ ] Pagination
@@ -67,10 +67,10 @@ kib-movies-api/
 Each phase = one feature branch off `develop`, conventional commits, merged via PR.
 
 - [x] **Phase 0 — Repo & workflow setup** — `git init`, `main`+`develop`, public remote, `.gitignore`, `chore: init`
-- [x] **Phase 1 — NestJS scaffold + config** — `@nestjs/config`, **port 8080**, global `ValidationPipe` — `feature/scaffold`
+- [x] **Phase 1 — NestJS scaffold + config** — `@nestjs/config`, **port 8080**, global `ValidationPipe` — `feature/base`
 - [x] **Phase 2 — Docker & docker-compose** — Dockerfile (multi-stage), app/postgres/redis, healthchecks, migrate on start — `feature/docker`
-- [ ] **Phase 3 — Prisma schema** — models + first migration + `PrismaService` — `feature/prisma-schema`
-- [ ] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `feature/tmdb-sync`
+- [x] **Phase 3 — Prisma schema** — models + first migration + `PrismaService` — `feature/prisma`
+- [x] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `tmdb`
 - [ ] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `feature/movies`
 - [ ] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `feature/ratings`
 - [ ] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `feature/watchlist`
@@ -112,5 +112,6 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 ## Milestone log
 
 - 2026-06-25 — Project planned. Stack locked: NestJS + Prisma/Postgres + Redis + JWT, seed+cron sync.
-- Upcoming Milestones.
+- 2026-06-25 — Phase 3 done: Prisma 7 schema, migrations, PrismaService (pg driver adapter).
+- 2026-06-25 — Phase 4 done: TMDB client + idempotent sync, `npm run seed`, daily cron. Seeded 60 movies / 19 genres.
 ```
