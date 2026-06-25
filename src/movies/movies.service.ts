@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ListMoviesDto } from './dto/list-movies.dto';
@@ -9,9 +10,18 @@ type MovieWithGenres = Prisma.MovieGetPayload<{
 
 @Injectable()
 export class MoviesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(CACHE_MANAGER) private readonly cache: Cache,
+  ) {}
 
   async findAll(query: ListMoviesDto) {
+    const cacheKey = `movies:list:${JSON.stringify(query)}`;
+    const cached = await this.cache.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const { page, limit, search, genre } = query;
 
     const where: Prisma.MovieWhereInput = {};
@@ -42,7 +52,7 @@ export class MoviesService {
     });
     const avgMap = new Map(averages.map((a) => [a.movieId, a._avg.value]));
 
-    return {
+    const result = {
       data: movies.map((m) => this.toDto(m, avgMap.get(m.id) ?? null)),
       meta: {
         page,
@@ -51,9 +61,18 @@ export class MoviesService {
         totalPages: Math.ceil(total / limit),
       },
     };
+
+    await this.cache.set(cacheKey, result);
+    return result;
   }
 
   async findOne(id: number) {
+    const cacheKey = `movies:item:${id}`;
+    const cached = await this.cache.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const movie = await this.prisma.movie.findUnique({
       where: { id },
       include: { genres: { include: { genre: true } } },
@@ -66,7 +85,14 @@ export class MoviesService {
       where: { movieId: id },
       _avg: { value: true },
     });
-    return this.toDto(movie, agg._avg.value);
+    const dto = this.toDto(movie, agg._avg.value);
+    await this.cache.set(cacheKey, dto);
+    return dto;
+  }
+
+  /** Drop all cached movie list/detail entries (averages change on rating/sync). */
+  async invalidate(): Promise<void> {
+    await this.cache.clear();
   }
 
   private toDto(movie: MovieWithGenres, averageRating: number | null) {

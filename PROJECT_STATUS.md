@@ -47,7 +47,7 @@ kib-movies-api/
 - [x] Search
 - [x] Pagination
 - [x] Filtering (incl. by genre)
-- [ ] Caching mechanism (Redis) to reduce DB calls
+- [x] Caching mechanism (Redis) to reduce DB calls
 - [x] Rate a movie + average rating shown in movies list
 - [x] Add to watchlist / mark as favorite
 - [ ] Runs via `docker-compose up`
@@ -74,7 +74,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `movies`
 - [x] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `ratings`
 - [x] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `watchlist`
-- [ ] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes, `CacheInterceptor` — `feature/caching`
+- [x] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes — `cache`
 - [ ] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `feature/auth`
 - [ ] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `feature/swagger-docs`
 - [ ] **Phase 11 — Testing ≥ 85%** — service/controller/guard units + e2e, coverage thresholds — `feature/tests`
@@ -117,4 +117,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 5 done: `GET /movies` with pagination, search, genre filter, averageRating, and `GET /movies/:id`.
 - 2026-06-25 — Phase 6 done: `POST /movies/:id/rating` (upsert, 1–10), recomputes average shown in movies endpoints.
 - 2026-06-25 — Phase 7 done: watchlist/favorites add, list (filter by type), delete via `WatchlistItem` model.
+- 2026-06-25 — Phase 8 done: Redis cache (cache-manager v7 + @keyv/redis) on movie reads, invalidated on rating/sync.
 ```

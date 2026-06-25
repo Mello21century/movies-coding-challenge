@@ -1,4 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { TmdbService } from './tmdb.service';
@@ -15,6 +16,7 @@ export class SyncService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly tmdb: TmdbService,
+    @Inject(CACHE_MANAGER) private readonly cache: Cache,
   ) {}
 
   async syncGenres(): Promise<number> {
@@ -78,6 +80,8 @@ export class SyncService {
   async syncAll(pages = 5): Promise<void> {
     await this.syncGenres();
     await this.syncMovies(pages);
+    // Movie data changed → drop cached lists/details.
+    await this.cache.clear();
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_3AM)
