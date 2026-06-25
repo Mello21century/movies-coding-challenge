@@ -10,6 +10,7 @@ import { TmdbModule } from './tmdb/tmdb.module';
 import { MoviesModule } from './movies/movies.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { WatchlistModule } from './watchlist/watchlist.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { WatchlistModule } from './watchlist/watchlist.module';
     MoviesModule,
     RatingsModule,
     WatchlistModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
