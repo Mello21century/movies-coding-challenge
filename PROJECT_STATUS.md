@@ -54,10 +54,10 @@ kib-movies-api/
 - [x] Accessible at http://localhost:8080
 - [x] API documentation (Swagger + README)
 - [x] Unit tests ≥ 85% coverage (100% statements/lines/functions)
-- [ ] Markdown docs (structure, setup, prerequisites)
-- [ ] Clean branch/commit workflow
-- [ ] Production ready (helmet, throttler, env validation, graceful shutdown)
-- [ ] SOLID / KISS / YAGNI / DRY
+- [x] Markdown docs (structure, setup, prerequisites)
+- [x] Clean branch/commit workflow
+- [x] Production ready (helmet, throttler, env validation, graceful shutdown)
+- [x] SOLID / KISS / YAGNI / DRY
 - [x] (Nice-to-have) Secure APIs — JWT auth
 
 ---
@@ -78,7 +78,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `auth`
 - [x] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `docs`
 - [x] **Phase 11 — Testing ≥ 85%** — service/controller/guard units, coverage thresholds — `tests`
-- [ ] **Phase 12 — Production hardening + docs** — helmet, throttler, env validation, logging, README — `feature/hardening`
+- [x] **Phase 12 — Production hardening + docs** — helmet, throttler, env validation, README — `hardening`
 - [ ] **Phase 13 — Release** — merge to `main`, tag, fresh-clone sanity check
 
 ---
@@ -121,4 +121,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 9 done: JWT auth (register/login, bcrypt), guards protect rating + watchlist; user taken from token.
 - 2026-06-25 — Phase 10 done: Swagger UI at /api/docs (bearer auth, tags), README endpoints table.
 - 2026-06-25 — Phase 11 done: 43 unit tests, 13 suites; 100% statements/lines/functions, branch threshold 80.
+- 2026-06-25 — Phase 12 done: helmet, rate limiting (100/60s → 429), Joi env validation, root→docs redirect, full README.
 ```
