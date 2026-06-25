@@ -1,10 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RateMovieDto } from './dto/rate-movie.dto';
 
 @Injectable()
 export class RatingsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(CACHE_MANAGER) private readonly cache: Cache,
+  ) {}
 
   /**
    * Upsert a user's rating for a movie, then return the movie's new average.
@@ -29,6 +33,9 @@ export class RatingsService {
       _avg: { value: true },
       _count: true,
     });
+
+    // Averages changed → drop cached movie lists/details.
+    await this.cache.clear();
 
     return {
       movieId,

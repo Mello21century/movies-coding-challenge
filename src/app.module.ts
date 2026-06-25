@@ -1,5 +1,7 @@
+import { createKeyv } from '@keyv/redis';
+import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -13,6 +15,14 @@ import { WatchlistModule } from './watchlist/watchlist.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        stores: [createKeyv(config.get<string>('REDIS_URL'))],
+        ttl: 60_000, // 60s default
+      }),
     }),
     ScheduleModule.forRoot(),
     PrismaModule,
