@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { TmdbModule } from './tmdb/tmdb.module';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TmdbModule } from './tmdb/tmdb.module';
     ScheduleModule.forRoot(),
     PrismaModule,
     TmdbModule,
+    MoviesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -43,10 +43,10 @@ kib-movies-api/
 
 - [x] Consumes TMDB API
 - [x] Stores & syncs data in PostgreSQL (scalable / future-proof)
-- [ ] Listing endpoint
-- [ ] Search
-- [ ] Pagination
-- [ ] Filtering (incl. by genre)
+- [x] Listing endpoint
+- [x] Search
+- [x] Pagination
+- [x] Filtering (incl. by genre)
 - [ ] Caching mechanism (Redis) to reduce DB calls
 - [ ] Rate a movie + average rating shown in movies list
 - [ ] Add to watchlist / mark as favorite
@@ -71,7 +71,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 2 — Docker & docker-compose** — Dockerfile (multi-stage), app/postgres/redis, healthchecks, migrate on start — `feature/docker`
 - [x] **Phase 3 — Prisma schema** — models + first migration + `PrismaService` — `feature/prisma`
 - [x] **Phase 4 — TMDB integration + sync** — `TmdbService`, `npm run seed` (idempotent upsert), cron sync — `tmdb`
-- [ ] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `feature/movies`
+- [x] **Phase 5 — Movies module** — `GET /movies` (pagination/search/genre filter + avg rating), `GET /movies/:id` — `movies`
 - [ ] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `feature/ratings`
 - [ ] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `feature/watchlist`
 - [ ] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes, `CacheInterceptor` — `feature/caching`
@@ -114,4 +114,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Project planned. Stack locked: NestJS + Prisma/Postgres + Redis + JWT, seed+cron sync.
 - 2026-06-25 — Phase 3 done: Prisma 7 schema, migrations, PrismaService (pg driver adapter).
 - 2026-06-25 — Phase 4 done: TMDB client + idempotent sync, `npm run seed`, daily cron. Seeded 60 movies / 19 genres.
+- 2026-06-25 — Phase 5 done: `GET /movies` with pagination, search, genre filter, averageRating, and `GET /movies/:id`.
 ```
