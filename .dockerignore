@@ -1,0 +1,7 @@
+node_modules
+dist
+.git
+.env
+coverage
+PROJECT_STATUS.md
+README.md
