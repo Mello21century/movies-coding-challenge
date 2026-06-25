@@ -11,10 +11,4 @@ export class CreateWatchlistItemDto {
   /** WATCHLIST or FAVORITE. */
   @IsEnum(WatchlistType)
   type: WatchlistType;
-
-  /** Temporary until Phase 9 (JWT auth) replaces it with the request user. */
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  userId: number;
 }

@@ -14,7 +14,7 @@ export class RatingsService {
    * Upsert a user's rating for a movie, then return the movie's new average.
    * One rating per (user, movie) — re-rating updates the existing value.
    */
-  async rateMovie(movieId: number, dto: RateMovieDto) {
+  async rateMovie(movieId: number, userId: number, dto: RateMovieDto) {
     const movie = await this.prisma.movie.findUnique({
       where: { id: movieId },
     });
@@ -23,8 +23,8 @@ export class RatingsService {
     }
 
     await this.prisma.rating.upsert({
-      where: { userId_movieId: { userId: dto.userId, movieId } },
-      create: { userId: dto.userId, movieId, value: dto.value },
+      where: { userId_movieId: { userId, movieId } },
+      create: { userId, movieId, value: dto.value },
       update: { value: dto.value },
     });
 

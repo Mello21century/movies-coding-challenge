@@ -58,7 +58,7 @@ kib-movies-api/
 - [ ] Clean branch/commit workflow
 - [ ] Production ready (helmet, throttler, env validation, graceful shutdown)
 - [ ] SOLID / KISS / YAGNI / DRY
-- [ ] (Nice-to-have) Secure APIs — JWT auth
+- [x] (Nice-to-have) Secure APIs — JWT auth
 
 ---
 
@@ -75,7 +75,7 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - [x] **Phase 6 — Ratings** — `POST /movies/:id/rating`, recompute avg, invalidate cache — `ratings`
 - [x] **Phase 7 — Watchlist / favorites** — add/list/delete by `type` — `watchlist`
 - [x] **Phase 8 — Redis caching** — cache list + averages, invalidate on writes — `cache`
-- [ ] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `feature/auth`
+- [x] **Phase 9 — JWT auth** — register/login, `JwtStrategy`+guard, protect rate/watchlist — `auth`
 - [ ] **Phase 10 — API docs** — Swagger at `/api/docs`, README endpoints — `feature/swagger-docs`
 - [ ] **Phase 11 — Testing ≥ 85%** — service/controller/guard units + e2e, coverage thresholds — `feature/tests`
 - [ ] **Phase 12 — Production hardening + docs** — helmet, throttler, env validation, logging, README — `feature/hardening`
@@ -118,4 +118,5 @@ Each phase = one feature branch off `develop`, conventional commits, merged via 
 - 2026-06-25 — Phase 6 done: `POST /movies/:id/rating` (upsert, 1–10), recomputes average shown in movies endpoints.
 - 2026-06-25 — Phase 7 done: watchlist/favorites add, list (filter by type), delete via `WatchlistItem` model.
 - 2026-06-25 — Phase 8 done: Redis cache (cache-manager v7 + @keyv/redis) on movie reads, invalidated on rating/sync.
+- 2026-06-25 — Phase 9 done: JWT auth (register/login, bcrypt), guards protect rating + watchlist; user taken from token.
 ```
